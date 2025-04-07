@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRI Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e63946;
+            --primary-dark: #c1121f;
+            --primary-light: #f8ad9d;
+            --secondary-color: #fff5f5;
+            --waluka-sidebar: #000000;
+            --text-color: #2b2d42;
+            --light-text: #6c757d;
+            --card-shadow: 0 4px 12px rgba(230, 57, 70, 0.15);
+            --card-hover-shadow: 0 8px 16px rgba(230, 57, 70, 0.2);
+            --sidebar-width: 250px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fef9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-dark);
+            color: white;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+            height: 100vh;
+            position: fixed;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header img {
+            height: 40px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: var(--primary-color);
+            border-left: 4px solid white;
+        }
+
+        .sidebar-menu i {
+            margin-right: 12px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-menu .menu-text {
+            flex-grow: 1;
+        }
+
+        .sidebar-menu .badge {
+            background: white;
+            color: var(--primary-dark);
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 45px;
+            margin-right: 15px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 18px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2 i {
+            color: var(--primary-color);
+        }
+
+        .card .value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+
+        .card .label {
+            color: var(--light-text);
+            font-size: 14px;
+        }
+
+        .clock {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, white 100%);
+        }
+
+        .clock .time {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 15px 0;
+            color: var(--primary-dark);
+            letter-spacing: 1px;
+        }
+
+        .clock .greeting {
+            font-size: 18px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .battery {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .battery-info {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .battery-level {
+            width: 100%;
+            height: 24px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-right: 15px;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .battery-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 12px;
+            width: 57%;
+            transition: width 0.5s ease;
+        }
+
+        .battery-status {
+            font-size: 14px;
+            color: var(--light-text);
+            font-style: italic;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--light-text);
+            font-size: 14px;
+            padding: 25px;
+            border-top: 1px solid var(--primary-light);
+        }
+
+        .footer p:first-child {
+            color: var(--primary-dark);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .time-update {
+            animation: pulse 0.5s ease;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .card .value {
+                font-size: 28px;
+            }
+            
+            .logo h1 {
+                font-size: 24px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+        }
+        
+                /* Red Theme Variables */
+        :root {
+            --primary-red: #ff0000;
+            --dark-red: #cc0000;
+            --light-red: #ff6666;
+            --white: #ffffff;
+            --black: #000000;
+        }
+
+        /* Floating Chat Button - White Icon on Red */
+        .floating-chat-btn {
+            position: fixed;
+            bottom: 100px; /* Moved up from bottom */
+            right: 30px;
+            z-index: 9999;
+        }
+
+        .chat-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--white);
+        }
+
+        .chat-icon:hover {
+            transform: scale(1.1);
+            background: var(--dark-red);
+        }
+
+        .chat-icon i {
+            color: var(--white);
+            font-size: 28px;
+        }
+
+        /* Chat Window - Red Theme */
+        .chat-window {
+            position: fixed;
+            bottom: 160px; /* Positioned above the button */
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: var(--primary-red);
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 9998;
+            border: 2px solid var(--white);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 12px 15px;
+            background: var(--dark-red);
+            color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .chat-iframe {
+            flex: 1;
+            border: none;
+            background: var(--white);
+        }
+
+        /* Animation for smooth appearance */
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .chat-window.open {
+            display: flex;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chat-window {
+                width: 90%;
+                right: 5%;
+                height: 80vh;
+                bottom: 120px;
+            }
+            
+            .floating-chat-btn {
+                bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://i.ibb.co/XfCcWFsG/Picsart-25-03-27-20-44-23-257.png" alt="SRI Bot Logo">
+            <h3>SRI Dashboard</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="index.html" class="active"><i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span></a></li>
+            <li><a href="webpair.html"><i class="fas fa-robot"></i> <span class="menu-text">Bot Pair Code</span></a></li>
+            <li><a href="#"><i class="fas fa-comments"></i> <span class="menu-text">Uptimer</span> <span class="badge">24</span></a></li>
+            <!-- <li><a href="#"><i class="fas fa-chart-bar"></i> <span class="menu-text">Analytics</span></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> <span class="menu-text">Settings</span></a></li>
+            <li><a href="#"><i class="fas fa-users"></i> <span class="menu-text">Users</span></a></li>
+            <li><a href="#"><i class="fas fa-plug"></i> <span class="menu-text">Integrations</span></a></li>
+            <li><a href="#"><i class="fas fa-file-alt"></i> <span class="menu-text">Reports</span></a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> <span class="menu-text">Help</span></a></li>
+            <li><a href="#"><i class="fas fa-sign-out-alt"></i> <span class="menu-text">Logout</span></a></li> -->
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <header>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <img src="https://i.ibb.co/XfCcWFsG/Picsart-25-03-27-20-44-23-257.png" alt="SRI Bot Logo">
+                    <h1>SRI Dashboard</h1>
+                </div>
+            </header>
+
+            <div class="dashboard">
+                <div class="card clock">
+                    <h2><i class="fas fa-clock"></i> Current Time</h2>
+                    <div class="time" id="current-time">--:--:--</div>
+                    <div class="greeting" id="greeting">Welcome to SRI Bot</div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-robot"></i> Active Sessions</h2>
+                    <div class="value">1,248</div>
+                    <div class="label">Currently interacting with SRI Bot</div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-server"></i> Server Status</h2>
+                    <div class="value">Online</div>
+                    <div class="label">Main server operational</div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-sync-alt"></i> Last Updated</h2>
+                    <div class="value" id="last-updated">2025-01-20</div>
+                    <div class="label">System configuration update</div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-chart-line"></i> Total Interactions</h2>
+                    <div class="value">16.5M+</div>
+                    <div class="label">Since deployment</div>
+                </div>
+
+                <div class="card battery">
+                    <h2><i class="fas fa-heartbeat"></i> System Health</h2>
+                    <div class="value">87%</div>
+                    <div class="battery-info">
+                        <div class="battery-level">
+                            <div class="battery-fill" style="width: 87%;"></div>
+                        </div>
+                        <div class="battery-status">Optimal performance</div>
+                    </div>
+                </div>
+            </div>
+            
+                <!-- Your website content here -->
+
+    <!-- Floating Chat Button -->
+    <div class="floating-chat-btn" id="chatBtn">
+        <div class="chat-icon">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <span>SRI Chat</span>
+            <button class="close-btn" id="closeChat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <iframe src="https://sri-chat.vercel.app/" class="chat-iframe" allow="camera; microphone"></iframe>
+    </div>
+
+            <div class="footer">
+                <p>Special Thanks For: Our Amazing Development Team</p>
+                <p>&copy; 2025 SRI Bot Technologies. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update clock in real-time with animation
+        function updateClock() {
+            const now = new Date();
+            const timeElement = document.getElementById('current-time');
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            // Add animation class
+            timeElement.classList.add('time-update');
+            setTimeout(() => {
+                timeElement.classList.remove('time-update');
+            }, 500);
+            
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+
+            // Update greeting based on time of day
+            const greetingElement = document.getElementById('greeting');
+            if (hours < 12) {
+                greetingElement.textContent = 'Good morning with SRI Bot';
+            } else if (hours < 18) {
+                greetingElement.textContent = 'Good afternoon with SRI Bot';
+            } else {
+                greetingElement.textContent = 'Good evening with SRI Bot';
+            }
+        }
+
+        // Update last updated date to current date
+        document.getElementById('last-updated').textContent = new Date().toISOString().split('T')[0];
+
+        // Initialize clock and update every second
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Simulate changing system health for demo purposes
+        setInterval(() => {
+            const batteryFill = document.querySelector('.battery-fill');
+            const batteryValue = document.querySelector('.battery .value');
+            const batteryStatus = document.querySelector('.battery-status');
+            const randomHealth = Math.floor(Math.random() * 20) + 80; // Random between 80-100
+            
+            batteryFill.style.width = `${randomHealth}%`;
+            batteryValue.textContent = `${randomHealth}%`;
+            
+            if (randomHealth > 90) {
+                batteryStatus.textContent = "Optimal performance";
+            } else if (randomHealth > 75) {
+                batteryStatus.textContent = "Good condition";
+            } else {
+                batteryStatus.textContent = "Needs attention";
+            }
+        }, 5000);
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (event) => {
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !mobileMenuBtn.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Keep your existing JavaScript functions here
+        
+        // Chat Toggle Functionality
+        const chatBtn = document.getElementById('chatBtn');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChat = document.getElementById('closeChat');
+
+        chatBtn.addEventListener('click', function() {
+            chatWindow.classList.toggle('open');
+        });
+
+        closeChat.addEventListener('click', function() {
+            chatWindow.classList.remove('open');
+        });
+
+        // Close when clicking outside (optional)
+        document.addEventListener('click', function(e) {
+            if (!chatWindow.contains(e.target) && !chatBtn.contains(e.target)) {
+                chatWindow.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
