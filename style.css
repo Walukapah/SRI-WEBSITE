@@ -1,0 +1,426 @@
+        :root {
+            --primary-color: #e63946;
+            --primary-dark: #c1121f;
+            --primary-light: #f8ad9d;
+            --secondary-color: #fff5f5;
+            --waluka-sidebar: #000000;
+            --text-color: #2b2d42;
+            --light-text: #6c757d;
+            --card-shadow: 0 4px 12px rgba(230, 57, 70, 0.15);
+            --card-hover-shadow: 0 8px 16px rgba(230, 57, 70, 0.2);
+            --sidebar-width: 250px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fef9f9;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-dark);
+            color: white;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+            height: 100vh;
+            position: fixed;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header img {
+            height: 40px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: var(--primary-color);
+            border-left: 4px solid white;
+        }
+
+        .sidebar-menu i {
+            margin-right: 12px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-menu .menu-text {
+            flex-grow: 1;
+        }
+
+        .sidebar-menu .badge {
+            background: white;
+            color: var(--primary-dark);
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 45px;
+            margin-right: 15px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 18px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2 i {
+            color: var(--primary-color);
+        }
+
+        .card .value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+
+        .card .label {
+            color: var(--light-text);
+            font-size: 14px;
+        }
+
+        .clock {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, white 100%);
+        }
+
+        .clock .time {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 15px 0;
+            color: var(--primary-dark);
+            letter-spacing: 1px;
+        }
+
+        .clock .greeting {
+            font-size: 18px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .battery {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .battery-info {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .battery-level {
+            width: 100%;
+            height: 24px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-right: 15px;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .battery-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-radius: 12px;
+            width: 57%;
+            transition: width 0.5s ease;
+        }
+
+        .battery-status {
+            font-size: 14px;
+            color: var(--light-text);
+            font-style: italic;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--light-text);
+            font-size: 14px;
+            padding: 25px;
+            border-top: 1px solid var(--primary-light);
+        }
+
+        .footer p:first-child {
+            color: var(--primary-dark);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .time-update {
+            animation: pulse 0.5s ease;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .card .value {
+                font-size: 28px;
+            }
+            
+            .logo h1 {
+                font-size: 24px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+        }
+        
+                /* Red Theme Variables */
+        :root {
+            --primary-red: #ff0000;
+            --dark-red: #cc0000;
+            --light-red: #ff6666;
+            --white: #ffffff;
+            --black: #000000;
+        }
+
+/* අලුතින් එක් කරන ලද ස්ටයිල් */
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 15px;
+        }
+
+        .close-btn:hover {
+            color: #ffd6d9;
+        }
+
+        /* Floating Chat Button */
+        .chat-toggle-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #e63946;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(230, 57, 70, 0.5);
+            cursor: pointer;
+            border: 2px solid white;
+            z-index: 1000;
+        }
+        
+        .chat-toggle-btn i {
+            color: white;
+            font-size: 28px;
+            transition: transform 0.3s;
+        }
+        
+        .chat-toggle-btn.active i {
+            transform: rotate(135deg);
+        }
+
+        /* Floating Chat Window */
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 450px;
+            background: #e63946;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 999;
+            border: 2px solid white;
+            overflow: hidden;
+            resize: none;
+        }
+        
+        .chat-window.active {
+            display: flex;
+        }
+        
+        .chat-header {
+            padding: 12px 15px;
+            background: #c1121f;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            user-select: none;
+        }
+        
+        .chat-content {
+            flex: 1;
+            background: white;
+            overflow: auto;
+        }
+        
+        .resize-handle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: 0;
+            bottom: 0;
+            cursor: nwse-resize;
+            background: #c1121f;
+            z-index: 10;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chat-window {
+                width: 90vw;
+                height: 60vh;
+                right: 5vw;
+                bottom: 80px;
+            }
+        }
